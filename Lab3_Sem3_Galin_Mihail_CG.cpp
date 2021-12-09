@@ -159,6 +159,7 @@ struct PolygonShape {
 };
 
 int main() {
+	int a;
 	PolygonShape original_shape(4), shape = original_shape;
 	RenderWindow window(VideoMode(1000, 1000), "Lab 3");
 	Event event;
