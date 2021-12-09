@@ -1,8 +1,7 @@
 ﻿#define _USE_MATH_DEFINES
 
-#include <iostream>
-#include <cmath>
 #include <SFML/Graphics.hpp>
+#include <cmath>
 
 using namespace std;
 using namespace sf;
@@ -11,7 +10,7 @@ struct Matrix {
 	int rows = 0, cols = 0;
 	vector<double> values;
 
-	Matrix(const int& rows, const int& cols, const vector<double>& values) {
+	Matrix(const int& cols, const int& rows, const vector<double>& values) {
 		this->rows = rows;
 		this->cols = cols;
 		this->values = values;
@@ -22,27 +21,28 @@ struct Matrix {
 	}
 
 	double getValue(const int& i, const int& j) const {
-		return values[cols * i + j];
+		return values[rows * i + j];
 	}
 
 	Vector2f toVector2f() const {
-		return Vector2f{ (float)getValue(0,0),(float)getValue(1,0) };
+		return Vector2f((float)getValue(0, 0), (float)getValue(1, 0));
 	}
 
 	Matrix operator*(const Matrix& a) const {
 		const Matrix& b = *this;
-		int h = a.rows, w = b.cols;
+		int rows = a.rows, cols = b.cols;
 		vector<double> v;
 		double sum = 0;
 
-		for (int i = 0; i < h; i++)
-			for (int j = 0; j < w; j++) {
+		for (int i = 0; i < rows; i++)
+			for (int j = 0; j < cols; j++) {
+				sum = 0;
 				for (int k = 0; k < a.cols; k++)
 					sum += a.getValue(i, k) * b.getValue(k, j);
 				v.push_back(sum);
 			}
 
-		return Matrix(h, w, v);
+		return Matrix(rows, cols, v);
 	}
 
 	static Matrix Translation(const double& x, const double& y) {
